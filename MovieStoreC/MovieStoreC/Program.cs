@@ -1,3 +1,6 @@
+using MovieStoreC.BL;
+using MovieStoreC.DL;
+
 namespace MovieStoreC
 {
     public class Program
@@ -7,19 +10,30 @@ namespace MovieStoreC
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.RegisterRepositories();
+            builder.Services.RegisterServices();
 
             builder.Services.AddControllers();
+            builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+            if (app.Environment.IsDevelopment())
+            {
+                {
+                    app.UseSwagger();
+                    app.UseSwaggerUI();
+                }
 
-            app.UseAuthorization();
+                // Configure the HTTP request pipeline.
+
+                app.UseAuthorization();
 
 
-            app.MapControllers();
+                app.MapControllers();
 
-            app.Run();
+                app.Run();
+            }
         }
     }
 }
